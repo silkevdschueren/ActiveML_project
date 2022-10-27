@@ -1,0 +1,6 @@
+Can we find a generalisation in using active learning models on multiclass datasets?
+Mini experiments:
+- Which active learning model is best for which multiclass classifier? Looking at batch size and accuracy/cumulative label of queries entropy. => Compare percentual increase of accuracy for each classifier with active learning models. Looking at classifiers that were trained to have kind of the same accuracy on one multiclass synthetic dataset (https://www.kaggle.com/competitions/syntheticdata/data?select=data_test.csv)
+- Does using different datasets/datatypes (using other synthetic dataset -> (https://www.kaggle.com/datasets/ealaxi/paysim1 ) and a real life dataset and a picture dataset something with the above results?
+- What effect does the initial class imbalance have on the active learning model accuracy for multiclass datasets? Then also using different multiclass datasets/types
+- What if we now do the same as above on binary classification models, does this give the same outcomes as for multiclass classification models?
