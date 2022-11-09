@@ -110,7 +110,19 @@ def ActiveLearning_UncertaintySampling(X_train, X_test, y_train, y_test, n_cycle
     qs = UncertaintySampling(method=method)
     accuracies, indep_accuracies, cycle = [], [], []
 
-    for c in range(n_cycles):
+    # Estimate performance of the initial model on the training set.
+    accuracies.append(clf.score(X_train, y_train))
+
+    # Estimate generalisation of the model using testset. Note that this data is not used 
+    # for the model, only for the returned accuracies to follow active learning performance.
+    y_pred = clf.predict(X_test)
+    bal_acc = balanced_accuracy(y_pred, y_test)
+    indep_accuracies.append(bal_acc)
+
+    # Save number of labeled samples.
+    cycle.append(batch_size)
+
+    for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, clf=clf, batch_size=batch_size)
         y[query_idx] = y_train[query_idx]
@@ -128,7 +140,7 @@ def ActiveLearning_UncertaintySampling(X_train, X_test, y_train, y_test, n_cycle
         indep_accuracies.append(bal_acc)
 
         # Save number of labeled samples.
-        cycle.append(c*batch_size)
+        cycle.append((c+2)*batch_size)
     
     return cycle, accuracies, indep_accuracies
 
@@ -158,7 +170,19 @@ def ActiveLearning_RandomSampling(X_train, X_test, y_train, y_test, n_cycles, ba
     qs = RandomSampling()
     accuracies, indep_accuracies, cycle = [], [], []
 
-    for c in range(n_cycles):
+    # Estimate performance of the initial model on the training set.
+    accuracies.append(clf.score(X_train, y_train))
+
+    # Estimate generalisation of the model using testset. Note that this data is not used 
+    # for the model, only for the returned accuracies to follow active learning performance.
+    y_pred = clf.predict(X_test)
+    bal_acc = balanced_accuracy(y_pred, y_test)
+    indep_accuracies.append(bal_acc)
+
+    # Save number of labeled samples.
+    cycle.append(batch_size)
+
+    for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, batch_size=batch_size)
         y[query_idx] = y_train[query_idx]
@@ -176,7 +200,7 @@ def ActiveLearning_RandomSampling(X_train, X_test, y_train, y_test, n_cycles, ba
         indep_accuracies.append(bal_acc)
 
         # Save number of labeled samples.
-        cycle.append(c*batch_size)
+        cycle.append((c+2)*batch_size)
     
     return cycle, accuracies, indep_accuracies
 
@@ -214,8 +238,20 @@ def ActiveLearning_QueryByCommittee(X_train, X_test, y_train, y_test, n_cycles, 
     # Active learning with query by committee.
     qs = QueryByCommittee()
     accuracies, indep_accuracies, cycle = [], [], []
+
+    # Estimate performance of the initial model on the training set.
+    accuracies.append(ensemble_bagging.score(X_train, y_train))
+
+    # Estimate generalisation of the model using testset. Note that this data is not used 
+    # for the model, only for the returned accuracies to follow active learning performance.
+    y_pred = ensemble_bagging.predict(X_test)
+    bal_acc = balanced_accuracy(y_pred, y_test)
+    indep_accuracies.append(bal_acc)
+
+    # Save number of labeled samples.
+    cycle.append(batch_size)
     
-    for c in range(n_cycles):
+    for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, ensemble=ensemble_bagging, batch_size=batch_size)
         y[query_idx] = y_train[query_idx]
@@ -233,7 +269,7 @@ def ActiveLearning_QueryByCommittee(X_train, X_test, y_train, y_test, n_cycles, 
         indep_accuracies.append(bal_acc)
 
         # Save number of labeled samples.
-        cycle.append(c*batch_size)
+        cycle.append((c+2)*batch_size)
     
     return cycle, accuracies, indep_accuracies
 
@@ -269,7 +305,19 @@ def ActiveLearning_CostEmbeddingAL(X_train, X_test, y_train, y_test, n_cycles, b
     qs = CostEmbeddingAL(classes=np.unique(y_train))
     accuracies, indep_accuracies, cycle = [], [], []
 
-    for c in range(n_cycles):
+    # Estimate performance of the initial model on the training set.
+    accuracies.append(clf.score(X_train, y_train))
+
+    # Estimate generalisation of the model using testset. Note that this data is not used 
+    # for the model, only for the returned accuracies to follow active learning performance.
+    y_pred = clf.predict(X_test)
+    bal_acc = balanced_accuracy(y_pred, y_test)
+    indep_accuracies.append(bal_acc)
+
+    # Save number of labeled samples.
+    cycle.append(batch_size)
+
+    for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, batch_size=batch_size)
         y[query_idx] = y_train[query_idx]
@@ -287,7 +335,7 @@ def ActiveLearning_CostEmbeddingAL(X_train, X_test, y_train, y_test, n_cycles, b
         indep_accuracies.append(bal_acc)
 
         # Save number of labeled samples.
-        cycle.append(c*batch_size)
+        cycle.append((c+2)*batch_size)
     
     return cycle, accuracies, indep_accuracies
 
@@ -318,7 +366,19 @@ def ActiveLearning_GreedySamplingX(X_train, X_test, y_train, y_test, n_cycles, b
     qs = GreedySamplingX()
     accuracies, indep_accuracies, cycle = [], [], []
 
-    for c in range(n_cycles):
+    # Estimate performance of the initial model on the training set.
+    accuracies.append(clf.score(X_train, y_train))
+
+    # Estimate generalisation of the model using testset. Note that this data is not used 
+    # for the model, only for the returned accuracies to follow active learning performance.
+    y_pred = clf.predict(X_test)
+    bal_acc = balanced_accuracy(y_pred, y_test)
+    indep_accuracies.append(bal_acc)
+
+    # Save number of labeled samples.
+    cycle.append(batch_size)
+
+    for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, batch_size=batch_size)
         y[query_idx] = y_train[query_idx]
@@ -336,6 +396,6 @@ def ActiveLearning_GreedySamplingX(X_train, X_test, y_train, y_test, n_cycles, b
         indep_accuracies.append(bal_acc)
 
         # Save number of labeled samples.
-        cycle.append(c*batch_size)
+        cycle.append((c+2)*batch_size)
     
     return cycle, accuracies, indep_accuracies
