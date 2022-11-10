@@ -84,7 +84,6 @@ def ActiveLearning_CrossValidation(X, y_true, folds, AL_method, n_cycles, batch_
         
     return cycle, np.mean(acc, axis=0)
 
-
 def ActiveLearning_UncertaintySampling(X_train, X_test, y_train, y_test, n_cycles, batch_size, clf, method='entropy'):
     """
     In uncertainty sampling, the unlabeled instance that the model is the least certain about 
@@ -101,10 +100,10 @@ def ActiveLearning_UncertaintySampling(X_train, X_test, y_train, y_test, n_cycle
     :return: Lists giving the number of labeled samples, the accuracy as determined from the 
     training set and the accuracy using an independent test set.
     """
-
+    
     initial = time.time()
-    file = open("logfile.txt", "w")
-    file.write(f"initial:\t {initial}\n")
+    with open('logfile.txt', 'w') as myfile:
+        myfile.write(f'0\t{time.time()-initial}\n')
         
     # Create initial set of labeled data and train initial model
     y = np.full(shape=y_train.shape, fill_value=MISSING_LABEL)
@@ -127,7 +126,9 @@ def ActiveLearning_UncertaintySampling(X_train, X_test, y_train, y_test, n_cycle
 
     # Save number of labeled samples.
     cycle.append(batch_size)
-    file.write(f"cycle 1:\t {time.time() - initial}\n")
+    
+    with open('logfile.txt', 'a') as myfile:
+        myfile.write(f'1\t{time.time()-initial}\n')
 
     for c in range(n_cycles-1):
         # Create query to add to labeled data.
@@ -148,8 +149,10 @@ def ActiveLearning_UncertaintySampling(X_train, X_test, y_train, y_test, n_cycle
 
         # Save number of labeled samples.
         cycle.append((c+2)*batch_size)
-        file.write(f"cycle {c+2}:\t {time.time() - initial}\n")
-    
+        
+        with open('logfile.txt', 'a') as myfile:
+            myfile.write(f'{c+2}\t{time.time()-initial}\n')
+
     return cycle, accuracies, indep_accuracies
 
 
@@ -167,6 +170,10 @@ def ActiveLearning_RandomSampling(X_train, X_test, y_train, y_test, n_cycles, ba
     :return: Lists giving the number of labeled samples, the accuracy as determined from the 
     training set and the accuracy using an independent test set.
     """
+
+    initial = time.time()
+    with open('logfile.txt', 'w') as myfile:
+        myfile.write(f'0\t{time.time()-initial}\n')
         
     # Create initial set of labeled data and train initial model
     y = np.full(shape=y_train.shape, fill_value=MISSING_LABEL)
@@ -189,6 +196,9 @@ def ActiveLearning_RandomSampling(X_train, X_test, y_train, y_test, n_cycles, ba
 
     # Save number of labeled samples.
     cycle.append(batch_size)
+    
+    with open('logfile.txt', 'a') as myfile:
+        myfile.write(f'1\t{time.time()-initial}\n')
 
     for c in range(n_cycles-1):
         # Create query to add to labeled data.
@@ -209,6 +219,9 @@ def ActiveLearning_RandomSampling(X_train, X_test, y_train, y_test, n_cycles, ba
 
         # Save number of labeled samples.
         cycle.append((c+2)*batch_size)
+
+        with open('logfile.txt', 'a') as myfile:
+            myfile.write(f'{c+2}\t{time.time()-initial}\n')
     
     return cycle, accuracies, indep_accuracies
 
@@ -233,6 +246,10 @@ def ActiveLearning_QueryByCommittee(X_train, X_test, y_train, y_test, n_cycles, 
     training set and the accuracy using an independent test set.
     """
     
+    initial = time.time()
+    with open('logfile.txt', 'w') as myfile:
+        myfile.write(f'0\t{time.time()-initial}\n')
+
     # Create initial set of labeled data and train initial model
     y = np.full(shape=y_train.shape, fill_value=MISSING_LABEL)
     initials = np.random.randint(0, len(y_train), batch_size)
@@ -258,6 +275,9 @@ def ActiveLearning_QueryByCommittee(X_train, X_test, y_train, y_test, n_cycles, 
 
     # Save number of labeled samples.
     cycle.append(batch_size)
+
+    with open('logfile.txt', 'a') as myfile:
+        myfile.write(f'1\t{time.time()-initial}\n')
     
     for c in range(n_cycles-1):
         # Create query to add to labeled data.
@@ -278,7 +298,10 @@ def ActiveLearning_QueryByCommittee(X_train, X_test, y_train, y_test, n_cycles, 
 
         # Save number of labeled samples.
         cycle.append((c+2)*batch_size)
-    
+
+        with open('logfile.txt', 'a') as myfile:
+            myfile.write(f'{c+2}\t{time.time()-initial}\n')
+
     return cycle, accuracies, indep_accuracies
 
 
@@ -302,6 +325,10 @@ def ActiveLearning_CostEmbeddingAL(X_train, X_test, y_train, y_test, n_cycles, b
     :return: Lists giving the number of labeled samples, the accuracy as determined from the 
     training set and the accuracy using an independent test set.
     """
+
+    initial = time.time()
+    with open('logfile.txt', 'w') as myfile:
+        myfile.write(f'0\t{time.time()-initial}\n')
     
     # Create initial set of labeled data and train initial model
     y = np.full(shape=y_train.shape, fill_value=MISSING_LABEL)
@@ -325,6 +352,9 @@ def ActiveLearning_CostEmbeddingAL(X_train, X_test, y_train, y_test, n_cycles, b
     # Save number of labeled samples.
     cycle.append(batch_size)
 
+    with open('logfile.txt', 'a') as myfile:
+        myfile.write(f'1\t{time.time()-initial}\n')
+
     for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, batch_size=batch_size)
@@ -344,6 +374,9 @@ def ActiveLearning_CostEmbeddingAL(X_train, X_test, y_train, y_test, n_cycles, b
 
         # Save number of labeled samples.
         cycle.append((c+2)*batch_size)
+
+        with open('logfile.txt', 'a') as myfile:
+            myfile.write(f'{c+2}\t{time.time()-initial}\n')
     
     return cycle, accuracies, indep_accuracies
 
@@ -363,6 +396,10 @@ def ActiveLearning_GreedySamplingX(X_train, X_test, y_train, y_test, n_cycles, b
     :return: Lists giving the number of labeled samples, the accuracy as determined from the 
     training set and the accuracy using an independent test set.
     """
+
+    initial = time.time()
+    with open('logfile.txt', 'w') as myfile:
+        myfile.write(f'0\t{time.time()-initial}\n')
         
     # Create initial set of labeled data and train initial model
     y = np.full(shape=y_train.shape, fill_value=MISSING_LABEL)
@@ -386,6 +423,9 @@ def ActiveLearning_GreedySamplingX(X_train, X_test, y_train, y_test, n_cycles, b
     # Save number of labeled samples.
     cycle.append(batch_size)
 
+    with open('logfile.txt', 'a') as myfile:
+        myfile.write(f'1\t{time.time()-initial}\n')
+
     for c in range(n_cycles-1):
         # Create query to add to labeled data.
         query_idx = qs.query(X=X_train, y=y, batch_size=batch_size)
@@ -405,5 +445,8 @@ def ActiveLearning_GreedySamplingX(X_train, X_test, y_train, y_test, n_cycles, b
 
         # Save number of labeled samples.
         cycle.append((c+2)*batch_size)
-    
+
+        with open('logfile.txt', 'a') as myfile:
+            myfile.write(f'{c+2}\t{time.time()-initial}\n')
+
     return cycle, accuracies, indep_accuracies
