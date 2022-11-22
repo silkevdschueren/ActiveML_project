@@ -7,7 +7,8 @@ from sklearn import pipeline, preprocessing
 from Methods import *
 
 
-def CalcActiveML(X, y_true, classifier, active, n_samples=23, batch_size=100, folds=5, n=10):
+def CalcActiveML(X, y_true, classifier, active, n_samples=23, batch_size=100, folds=5, n=10,
+        initialtunings=False):
     """
     Calculate the information needed to plot the learning curves for a given active learning 
     model on a given machine learning model, and write this information to a txt file.
@@ -27,7 +28,11 @@ def CalcActiveML(X, y_true, classifier, active, n_samples=23, batch_size=100, fo
     Default is 5.
     :param n: Number of cycles at which there needs to be hyperparameter tuning.
     Default is 10.
+    :param initialtunings: Parameter giving if there should be initial hypertuning during 
+    the first n cycles. Default is False.
     """
+
+
 
     if classifier == "LogisticRegression":
         model = LogisticRegression(random_state=0)
@@ -44,27 +49,32 @@ def CalcActiveML(X, y_true, classifier, active, n_samples=23, batch_size=100, fo
 
     if active == "RandomSampling":
         cycles, accuracies = ActiveLearning_CrossValidation(X, y_true, folds, 
-                ActiveLearning_RandomSampling, n_samples, batch_size, model, classifier, n=10)
+                ActiveLearning_RandomSampling, n_samples, batch_size, model, classifier, n=n, 
+                initialtunings=initialtunings)
     
     if active == "UncertaintySampling":
         cycles, accuracies = ActiveLearning_CrossValidation(X, y_true, folds, 
-                ActiveLearning_UncertaintySampling, n_samples, batch_size, model, classifier, n=10)
+                ActiveLearning_UncertaintySampling, n_samples, batch_size, model, classifier, n=n, 
+                initialtunings=initialtunings)
         
     if active == "QueryByCommittee":
         cycles, accuracies = ActiveLearning_CrossValidation(X, y_true, folds, 
-                ActiveLearning_QueryByCommittee, n_samples, batch_size, model, classifier, n=10)
+                ActiveLearning_QueryByCommittee, n_samples, batch_size, model, classifier, n=n, 
+                initialtunings=initialtunings)
         
     if active == "CostEmbedding":
         cycles, accuracies = ActiveLearning_CrossValidation(X, y_true, folds, 
-                ActiveLearning_CostEmbeddingAL, n_samples, batch_size, model, classifier, n=10)
+                ActiveLearning_CostEmbeddingAL, n_samples, batch_size, model, classifier, n=n, 
+                initialtunings=initialtunings)
         
     if active == "GreedySampling":
         cycles, accuracies = ActiveLearning_CrossValidation(X, y_true, folds, 
-                ActiveLearning_GreedySamplingX, n_samples, batch_size, model, classifier, n=10)
+                ActiveLearning_GreedySamplingX, n_samples, batch_size, model, classifier, n=n, 
+                initialtunings=initialtunings)
 
 
     # Write information to file.
-    f = open(f'{classifier}_{active}_{n_samples}_{batch_size}_{n}.txt', 'w')
+    f = open(f'{classifier}_{active}_{n_samples}_{batch_size}_{n:02d}.txt', 'w')
     for i, cycle in enumerate(cycles):
         f.write(str(cycle) + ' ' + str(accuracies[i]) + '\n')
     f.close()

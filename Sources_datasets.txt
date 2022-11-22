@@ -1,7 +1,0 @@
-- Synthetic dataset 1 = dataset from Kaggle for tech student profile prediction (The dataset called ‘dataset-tortuga’ is with the labels for classification, the other one is without the labels):
-https://www.kaggle.com/datasets/scarecrow2020/tech-students-profile-prediction
-- Synthetic dataset 2 = synthetic iris dataset from Kaggle (maybe find a different one but this is the only one I can found that is not picture):
-https://www.kaggle.com/datasets/souravbhattacharya10/irisdataset 
-- Picture dataset = HASYV2 dataset from Kaggle (look at jupyter notebook, second exercise for instructions on how to extract it, skip first little block of that exercise the datasets are already extracted):
-https://www.kaggle.com/datasets/guru001/hasyv2 
-- Real life dataset = dataset from ….

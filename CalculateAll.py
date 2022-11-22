@@ -4,10 +4,13 @@ import sys
 def main():
 
     # Arguments given to the program in command line
-    classifier, active, n_samples, batch_size, n = sys.argv[1:]
+    classifier, active, n_samples, batch_size, n_hypertuning, initialtunings = sys.argv[1:]
     n_samples = int(n_samples)
     batch_size = int(batch_size)
-    n = int(n)
+    n_hypertuning = int(n_hypertuning)
+    initialtunings=bool(initialtunings)
+    print('HYPERTUNING: ', n_hypertuning)
+    print('INITIAL HYPERTUNING: ', initialtunings)
 
     # Read in dataframe
     data = pd.read_csv('dataset_1.csv')
@@ -23,7 +26,7 @@ def main():
     y_true = np.array(data[target]).astype('int')
     
 
-    CalcActiveML(X, y_true, classifier, active, n_samples, batch_size, n=10)
+    CalcActiveML(X, y_true, classifier, active, n_samples, batch_size, n=n_hypertuning, initialtunings=initialtunings)
 
     return
 
