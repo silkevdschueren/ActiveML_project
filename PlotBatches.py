@@ -13,19 +13,22 @@ def main():
 
     batch_sizes = [50, 75, 100, 125, 150]
     cycles = [280, 186, 140, 112, 93]
+    
+    colors=['red', 'orange', 'yellow', 'green', 'blue']
 
-    for batch_size, cycle in zip(batch_sizes, cycles):
-        for classifier in classifiers:
+    for classifier in classifiers:
+        for active in actives: 
             fig, ax = plt.subplots()
 
-            for active in actives:
+            for index, (batch_size, cycle) in enumerate(zip(batch_sizes, cycles)):
                 x, y = np.loadtxt(f"InitialTuning/AllBatch{batch_size}/{classifier}_{active}_{cycle}_{batch_size}_{n_hypertuning}.txt", unpack=True)
-                ax.plot(x, y, label=active )
-                ax.set(xlabel="Labeled samples", ylabel="Accuracy", 
-                        title=f"{classifier}: {cycle} cycles, batch size {batch_size}, hyperparameter tuning\nevery {n_hypertuning} cycles and additional initial tuning")
+                ax.plot(x, y, label=f"batch size {batch_size}", color=colors[index])
+
+            ax.set(xlabel="Labeled samples", ylabel="Accuracy", 
+                   title=f"{classifier} {active}: Influence of batch size, with\nhyperparameter tuning every {n_hypertuning} cycles and additional initial tuning")
 
             plt.legend()
-            plt.savefig(f"Figures/InitialHypertuning_{classifier}_{cycle}_{batch_size}_{n_hypertuning}")
+            plt.savefig(f"Figures/Batchsize_{classifier}_{active}_{n_hypertuning}")
 
 
 if __name__ == "__main__":
